@@ -1,0 +1,61 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+{% load static %}
+
+    <head>
+        <title>ATTENDANCE</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+        
+    </head>
+
+    <body>
+        <br />
+        <h1 class="heading">CLOCK-IN & CLOCK-OUT</h1>
+        <div class="container">
+
+        
+                <p class="w-message">By clicking the button below you will be marked as present!</p>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button name="btnform1">CLOCK-IN</button>
+                    <button name="btnform2">CLOCK-OUT</button>
+                    </form>
+                     <br />
+                     {% if messages %}
+                      {% for message in messages %}
+                        <div class="container-fluid p-0">
+                            <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+        </div>
+        <br />
+        <br />
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>present</th>
+                    <th>Clock-IN</th>
+                    <th>Clock-OUT</th>
+                </tr>
+                {% for data in show_table %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td>{{data.date|date:"l"}}</td>
+                        <td>{{data.is_present|yesno:"✔,✘" }}</td>
+                        <td>{{data.clockin.time}}</td>
+                        <td>{{data.clockout.time}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+{% endblock %}

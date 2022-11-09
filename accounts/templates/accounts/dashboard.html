@@ -1,0 +1,97 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+
+{%  include 'accounts/status.html' %}
+
+{% load static %}
+
+{% load i18n %}
+
+<br>
+		
+		<form method="get">
+			{% csrf_token %}
+			<!-- {{ filter.form.as_p }} -->
+			<input type="text" name="date" class="form-control" placeholder="Date Contains" />
+			<br>
+			<input class="btn btn-sm btn-info" type="submit" />
+			
+			<!-- <a class="btn btn-sm btn-info" href="{%  url 'home' %}">{% trans 'Clear all filters' %}</a> -->
+		
+		</form>
+		<br />
+		<div class="card card-body">
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+			<button class="btn btn-sm btn-info" name="btnform1">Refresh</button>
+		</form>
+			<br />
+			<table class="table table-sm">
+				<tr>
+					<th>Date</th>
+					<th>Day</th>
+					<th>Name</th>
+					<th>Present</th>
+				</tr>
+
+				{% for emp in filter.qs %}
+					<tr>
+						<td>{{emp.date}}</td>
+						<td>{{emp.date|date:"l"}}</td>
+						<td>{{emp.attender}}</td>
+						<td>{{emp.is_present|yesno:"✔,✘" }}</td>
+						<!-- <td>{{emp.attender}}</td> -->
+					</tr>
+						
+				{% endfor %}
+
+		
+			</table>
+	</div>
+	<br />
+	<div class="row">
+
+		<div class="col-md-12">
+			<h5>STAKEHOLDERS</h5>
+			<!-- <form method="get">
+				{% csrf_token %}
+				{{ filter.form.as_p }}
+				<input class="btn btn-sm btn-info" type="submit" />
+				
+				<a class="btn btn-sm btn-info" href="{%  url 'home' %}">{% trans 'Clear all filters' %}</a>
+			
+			</form> -->
+			<hr>
+			<div class="card card-body">
+				
+				<table class="table table-sm">
+					<tr>
+						<th>Name</th>
+						<th>Designation</th>
+						<th>Phone</th>
+						<th>Email</th>
+						<th>Detail View</th>
+						<th>Remove</th>
+					</tr>
+	
+					{% for customer in customers %}
+						<tr>
+							<td>{{customer.name}}</td>
+							<td>{{customer.designation}}</td>
+							<td>{{customer.phone}}</td>
+							<td>{{customer.email}}</td>
+							<td><a class="btn btn-sm btn-info" href="{% url 'detail_view' customer.id %}">Detail View</a></td>
+							<td><a class="btn btn-sm btn-danger" href="{% url 'delete_view' customer.id %}">Delete</a></td>
+						</tr>
+							
+					{% endfor %}
+	
+			
+				</table>
+			</div>
+</div>
+</div>
+
+{% endblock %}
+

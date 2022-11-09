@@ -1,0 +1,47 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% load i18n %}
+
+<br />
+<h2>{{name}}'s Detail View</h2>
+<form method="get">
+    {% csrf_token %}
+    {{ filter.form.as_p }}
+    <input class="btn btn-sm btn-info" type="submit" />
+    
+    <!-- <a class="btn btn-sm btn-info" href="{%  url 'home' %}">{% trans 'Clear all filters' %}</a> -->
+
+</form>
+<br />
+<div class="card card-body">
+    <!-- <button class="btn btn-sm btn-info" name="btnform1">Refresh</button> -->
+    <br />
+    <table class="table table-sm">
+        <tr>
+            <!-- <th>name</th> -->
+            <th>Date</th>
+            <th>Day</th>
+            <th>Clock-IN</th>
+            <th>Clock-OUT</th>
+            <!-- <th>Absent</th> -->
+        </tr>
+
+        {% for emp in filter.qs %}
+            <tr>
+                <!-- <td>{{emp.attender}}</td> -->
+                <td>{{emp.date}}</td>
+                <td>{{emp.date|date:"l"}}</td>
+                <td>{{emp.clockin.time}}</td>
+                <td>{{emp.clockout.time}}</td>
+            </tr>
+                
+        {% endfor %}
+
+
+    </table>
+</div>
+{% endblock %}
